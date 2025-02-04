@@ -12,6 +12,6 @@ export class ReportRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path}`, this.report.getReport);
+    this.router.get(`${this.path}/revenue`, this.report.getReport);
   }
 }

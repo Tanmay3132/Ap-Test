@@ -8,12 +8,12 @@ import hpp from 'hpp';
 import morgan from 'morgan';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
-import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@config';
+import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS, MONGO_URI } from '@config';
 import { dbConnection } from '@database';
 import { Routes } from '@interfaces/routes.interface';
 import { ErrorMiddleware } from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
-import mongoose, { connect, set } from 'mongoose';
+import { connect, set } from 'mongoose';
 
 export class App {
   public app: express.Application;
@@ -54,7 +54,7 @@ export class App {
       set('debug', true);
     }
 
-    connect(dbConnection.url)
+    connect(MONGO_URI)
       .then(() => {
         logger.info(`Connected To DB`);
       })
