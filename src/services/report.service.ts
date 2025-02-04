@@ -8,7 +8,7 @@ export class ReportService {
 
   private revenueModel = RevenueModel;
 
-  public async fetchRevenueReports(): Promise<any> {
+  public async fetchRevenueReports(): Promise<Array<any>> {
     const twoHoursAgo = new Date();
     twoHoursAgo.setHours(twoHoursAgo.getHours() - 2);
 
