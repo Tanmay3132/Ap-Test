@@ -5,5 +5,10 @@ export const ValidateEnv = () => {
     NODE_ENV: str(),
     PORT: port(),
     MONGO_URI: str(),
+    API_KEY: str(),
+    LOG_GROUP_NAME: str(),
+    LOG_SERVICE_NAME: str(),
+    LOKI_URL: str()
   });
 };
+

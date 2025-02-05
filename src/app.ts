@@ -11,9 +11,9 @@ import swaggerUi from 'swagger-ui-express';
 import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@config';
 import { dbConnection } from '@database';
 import { Routes } from '@interfaces/routes.interface';
-import { ErrorMiddleware } from '@middlewares/error.middleware';
-import { logger, stream } from '@utils/logger';
-import mongoose, { connect, set } from 'mongoose';
+import { logger } from '@utils/logger';
+import { connect, set } from 'mongoose';
+import errorMiddleware from './middlewares/error.middleware';
 
 export class App {
   public app: express.Application;
@@ -45,10 +45,6 @@ export class App {
     return this.app;
   }
 
-  //   private async connectToDatabase() {
-  //     await dbConnection();
-  //   }
-
   private connectToDatabase() {
     if (this.env !== 'production') {
       set('debug', true);
@@ -65,7 +61,18 @@ export class App {
   }
 
   private initializeMiddlewares() {
-    this.app.use(morgan(LOG_FORMAT, { stream }));
+    this.app.use(morgan((tokens, req, res) => {
+      logger.info(
+        JSON.stringify({
+          method: tokens.method && tokens.method(req, res),
+          url: tokens.url && tokens.url(req, res),
+          status: tokens.status && Number(tokens.status(req, res)),
+          timeTakenInMS: tokens['response-time'] && Number(tokens['response-time'](req, res)),
+          totalTime: tokens['total-time'] && Number(tokens['total-time'](req, res)),
+        }),
+      );
+      return `Request completed.`;
+    }),);
     this.app.use(cors({ origin: ORIGIN, credentials: CREDENTIALS }));
     this.app.use(hpp());
     this.app.use(helmet());
@@ -98,6 +105,6 @@ export class App {
   }
 
   private initializeErrorHandling() {
-    this.app.use(ErrorMiddleware);
+    this.app.use(errorMiddleware);
   }
 }

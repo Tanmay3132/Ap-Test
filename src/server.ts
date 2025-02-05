@@ -1,9 +1,9 @@
 import { App } from '@/app';
 import { ValidateEnv } from '@utils/validateEnv';
-import { ReportRoute } from './routes/report.route';
+import { ReportsRoute } from './routes/reporting.route';
 
 ValidateEnv();
 
-const app = new App([new ReportRoute()]);
+const app = new App([new ReportsRoute()]);
 
 app.listen();
