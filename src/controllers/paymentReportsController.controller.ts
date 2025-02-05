@@ -21,9 +21,9 @@ export class PaymentReportsController {
         throw new HttpException(403, 'Invalid Status!. Please send the valid status.')
       }
 
-      if (!this.validateDates(startTime, endTime)) {
-        throw new HttpException(404, 'Invalid Date!. End time must be greater than the start time. and difference must be less than 2 days');
-      }
+      // if (!this.validateDates(startTime, endTime)) {
+      //   throw new HttpException(404, 'Invalid Date!. End time must be greater than the start time. and difference must be less than 2 days');
+      // }
 
       const paymentReports: IPaymentReport[] = await this.paymentReportsService.getPaymentReports({ department, serviceName, status, startTime, endTime });
 

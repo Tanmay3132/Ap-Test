@@ -43,6 +43,10 @@ class PaymentReportsService {
             } else if (end) {
                query.createdate = { '$lte': end };
             }
+         }else{
+            const start = new Date(new Date().setDate(new Date().getDate() - 2)) ;
+            query.createdate = { '$gte': start };
+           
          }
 
          if (status) {
