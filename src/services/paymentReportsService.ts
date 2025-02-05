@@ -2,15 +2,12 @@ import { HttpException } from "@/exceptions/HttpException";
 import { ICDMAPaymentReport, IPaymentReport, IRevenueServicePaymentReport } from "@/interfaces/paymentReports.interface";
 import CDMAServicePaymentReportModel from "@/models/cdmaPaymentReport.model";
 import revenueServicePaymentReportModel from "@/models/revenuePaymentReport.model";
+import { logger } from "@/utils/logger";
 const Departments = {
    REVENUE: 'revenue',
    CDMA: 'cdma'
 };
-const Status = {
-   SUCCESS: 'success',
-   FAILED: 'failed',
-   PENDING: 'pending'
-};
+
 class PaymentReportsService {
    private revenueServicePaymentReports = revenueServicePaymentReportModel;
    private cdmaServicePaymentReports = CDMAServicePaymentReportModel;
@@ -30,8 +27,6 @@ class PaymentReportsService {
 
    private async getPaymentReportsForRevenueService({ serviceName, status, startTime, endTime }): Promise<IPaymentReport[]> {
       try {
-
-
          const query: Partial<IRevenueServicePaymentReport> = {};
 
          if (serviceName) {
@@ -77,6 +72,7 @@ class PaymentReportsService {
          return newPaymentReports;
 
       } catch (error) {
+         logger.error(JSON.stringify({ function: 'getPaymentReportsForRevenueService', description: "Error in getting reports for the Revenue Services", message: error.message }));
          throw error;
       }
 
@@ -129,6 +125,7 @@ class PaymentReportsService {
          return newPaymentReports;
 
       } catch (error) {
+         logger.error(JSON.stringify({ function:'getPaymentReportsForCDMAService', description:"Error in getting reports for the CDMA Services", message :error.message}));
          throw error;
       }
 
@@ -191,6 +188,7 @@ class PaymentReportsService {
       return statusMap[status];
 
    }
+
 }
 
 export default PaymentReportsService;
